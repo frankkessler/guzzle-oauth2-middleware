@@ -1,6 +1,6 @@
 <?php
 
-namespace Frankkessler\Guzzle\Oauth2\Tests\GrantType;
+namespace Frankkessler\Guzzle\Oauth2\Tests;
 
 use Frankkessler\Guzzle\Oauth2\AccessToken;
 use Frankkessler\Guzzle\Oauth2\GrantType\ClientCredentials;
