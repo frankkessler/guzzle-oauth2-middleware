@@ -2,14 +2,9 @@
 
 namespace Frankkessler\Guzzle\Oauth2\Tests;
 
-
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\Psr7\Request;
-
 class MockResponses
 {
     /**
-     *
      * @return string
      */
     public static function mockApiCall()

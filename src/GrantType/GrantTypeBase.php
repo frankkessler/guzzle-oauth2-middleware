@@ -19,20 +19,21 @@ abstract class GrantTypeBase implements GrantTypeInterface
     {
         $this->config = array_merge($this->getDefaults(), $config);
 
-        if($diff = array_diff($this->getRequired(),array_keys($this->config))){
-            throw new InvalidArgumentException('Config is missing the following keys: '.implode(', ',$diff));
+        if ($diff = array_diff($this->getRequired(), array_keys($this->config))) {
+            throw new InvalidArgumentException('Config is missing the following keys: '.implode(', ', $diff));
         }
     }
 
     /**
      * @param null $key
+     *
      * @return string|array|null
      */
-    public function getConfig($key=null)
+    public function getConfig($key = null)
     {
-        if($key){
+        if ($key) {
             return isset($this->config[$key]) ? $this->config[$key] : null;
-        }else{
+        } else {
             return $this->config;
         }
     }
@@ -40,6 +41,7 @@ abstract class GrantTypeBase implements GrantTypeInterface
     /**
      * @param string $key
      * @param string $value
+     *
      * @return void
      */
     public function setConfig($key, $value)
@@ -79,7 +81,8 @@ abstract class GrantTypeBase implements GrantTypeInterface
      *
      * @return array|null
      */
-    public function getAdditionalOptions(){
+    public function getAdditionalOptions()
+    {
         return [];
     }
 }
