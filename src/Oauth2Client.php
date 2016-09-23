@@ -2,12 +2,12 @@
 
 namespace Frankkessler\Guzzle\Oauth2;
 
+use Exception;
 use Frankkessler\Guzzle\Oauth2\Exceptions\InvalidGrantException;
 use Frankkessler\Guzzle\Oauth2\GrantType\GrantTypeBase;
 use Frankkessler\Guzzle\Oauth2\GrantType\GrantTypeInterface;
 use Frankkessler\Guzzle\Oauth2\GrantType\RefreshTokenGrantTypeInterface;
 use Frankkessler\Guzzle\Oauth2\Middleware\RetryModifyRequestMiddleware;
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -199,7 +199,7 @@ class Oauth2Client extends Client
     {
         $token_client_config = [];
 
-        if(isset($this->config['token_handler'])){
+        if (isset($this->config['token_handler'])) {
             $token_client_config['handler'] = $this->config['token_handler'];
         }
 
@@ -242,14 +242,14 @@ class Oauth2Client extends Client
                     throw(new Exception($data['error'], (isset($data['status_code'])) ? $data['status_code'] : 0));
                     break;
             }
-        } elseif ($response->getStatusCode() == 401){
+        } elseif ($response->getStatusCode() == 401) {
             throw(new InvalidGrantException('invalid_grant', (isset($data['status_code'])) ? $data['status_code'] : 0));
         }
     }
 
     public function setGrantType(GrantTypeBase $grantType)
     {
-        if(isset($this->config['base_uri'])){
+        if (isset($this->config['base_uri'])) {
             $grantType->setConfig('base_uri', $this->config['base_uri']);
         }
 
