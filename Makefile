@@ -15,5 +15,5 @@ stop-server:
 	) && [ -n "$$PID" ] && kill $$PID || true
 
 test: start-server
-	vendor/bin/phpunit --configuration phpunit.xml
+	vendor/bin/phpunit
 	$(MAKE) stop-server
