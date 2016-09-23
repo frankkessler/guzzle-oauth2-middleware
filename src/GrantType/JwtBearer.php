@@ -2,7 +2,6 @@
 
 namespace Frankkessler\Guzzle\Oauth2\GrantType;
 
-use GuzzleHttp\ClientInterface;
 use Guzzle\Common\Exception\InvalidArgumentException;
 use JWT;
 use SplFileObject;
