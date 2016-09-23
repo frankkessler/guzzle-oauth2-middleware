@@ -39,7 +39,7 @@ class JwtBearerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         ]);
 
         $client = new Oauth2Client([
-            'auth' => 'oauth2',
+            'auth'     => 'oauth2',
             'base_uri' => GuzzleServer::$url,
         ]);
 
@@ -56,8 +56,8 @@ class JwtBearerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $this->assertTrue($token->getExpires()->getTimestamp() > time());
 
         foreach (GuzzleServer::received() as $request) {
-            /** @var Request $request */
-                $this->assertContains("scope=&grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=", (string)$request->getBody());
+            /* @var Request $request */
+                $this->assertContains('scope=&grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=', (string) $request->getBody());
         }
 
         GuzzleServer::flush();
