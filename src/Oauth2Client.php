@@ -208,7 +208,7 @@ class Oauth2Client extends Client
 
         $form_params = $config;
         $form_params['grant_type'] = $grantType->grantType;
-        unset($form_params['token_url'], $form_params['auth_location'], $form_params['body_type'], $form_params['base_uri']);
+        unset($form_params['token_url'], $form_params['auth_location'], $form_params['body_type'], $form_params['base_uri'], $form_params['private_key']);
 
         $requestOptions = [];
 

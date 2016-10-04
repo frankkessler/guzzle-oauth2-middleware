@@ -19,6 +19,12 @@ Provides an OAuth2 middleware for [Guzzle](http://guzzlephp.org/) version 6+.
 
 ## Running the tests
 
+On Windows, you must put the openssl.cnf file that comes with your version of PHP at the following location:
+
+```
+C:\usr\local\ssl\openssl.cnf
+```
+
 First make sure you have all the dependencies in place by running `composer install --prefer-dist`.  You'll also need node installed to run the tests.  You can simply run `make test` to start the node server, run the tests and then shut down the node server.
 
 Alternatively, if you would like to run the node server in debug mode, you can run `node tests/server.js 8126 true` and then run `vendor/bin/phpunit` to run the tests.

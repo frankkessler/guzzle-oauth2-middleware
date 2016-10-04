@@ -27,7 +27,7 @@ abstract class GrantTypeBase implements GrantTypeInterface
     /**
      * @param null $key
      *
-     * @return string|array|null
+     * @return string|array|\SplFileObject|null
      */
     public function getConfig($key = null)
     {

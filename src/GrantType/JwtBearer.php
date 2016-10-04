@@ -3,8 +3,9 @@
 namespace Frankkessler\Guzzle\Oauth2\GrantType;
 
 use Guzzle\Common\Exception\InvalidArgumentException;
-use JWT;
-use SplFileObject;
+use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer\Key;
 
 /**
  * JSON Web Token (JWT) Bearer Token Profiles for OAuth 2.0.
@@ -21,10 +22,6 @@ class JwtBearer extends GrantTypeBase
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-
-        if (!($this->getConfig('private_key') instanceof SplFileObject)) {
-            throw new InvalidArgumentException('private_key needs to be instance of SplFileObject');
-        }
     }
 
     /**
@@ -54,28 +51,44 @@ class JwtBearer extends GrantTypeBase
     {
         $payload = [
             'iss' => $this->getConfig('client_id'),
-            'aud' => sprintf('%s/%s', rtrim($this->getConfig('base_uri'), '/'), ltrim($this->getConfig('token_url'), '/')),
+            'aud' => rtrim($this->getConfig('base_uri'), '/'),
             'exp' => time() + 60 * 60,
             'iat' => time(),
+            'sub' => '',
         ];
 
-        return JWT::encode($payload, $this->readPrivateKey($this->getConfig('private_key')), 'RS256');
+        if(isset($this->config['payload']) && is_array($this->config['payload'])){
+            $payload = array_replace($payload, $this->config['payload']);
+        }
+
+        $algorithm = (isset($this->config['algorithm']))?$this->config['algorithm']:'RS256';
+
+        $signer = $this->signerFactory($algorithm);
+
+        $privateKey = new Key(file_get_contents(__DIR__.'/../../build/cert.key'), "testpassword");
+
+        $token = (new Builder())->setIssuer($payload['iss'])
+        ->setAudience($payload['aud'])
+        ->setIssuedAt($payload['iat'])
+        ->setExpiration($payload['exp'])
+        ->setSubject($payload['sub'])
+        ->sign($signer,  $privateKey) // creates a signature using your private key
+        ->getToken(); // Retrieves the generated token
+
+        return (string) $token;
     }
 
     /**
-     * Read private key.
+     * @param $algo
      *
-     * @param SplFileObject $privateKey
-     *
-     * @return string
+     * @return Signer
      */
-    protected function readPrivateKey(SplFileObject $privateKey)
+    protected function signerFactory($algo)
     {
-        $key = '';
-        while (!$privateKey->eof()) {
-            $key .= $privateKey->fgets();
+        switch($algo){
+            case 'RS256': return new \Lcobucci\JWT\Signer\Rsa\Sha256();
+                break;
+            default: return new \Lcobucci\JWT\Signer\Rsa\Sha256();
         }
-
-        return $key;
     }
 }
