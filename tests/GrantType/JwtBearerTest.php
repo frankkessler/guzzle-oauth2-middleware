@@ -8,7 +8,6 @@ use Frankkessler\Guzzle\Oauth2\Tests\GuzzleServer;
 use Frankkessler\Guzzle\Oauth2\Tests\MockResponses;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use SplFileObject;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
@@ -30,19 +29,19 @@ class JwtBearerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
 
         $config = [
             'private_key_type' => \OPENSSL_KEYTYPE_RSA,
-            'digest_alg' => 'sha256',
+            'digest_alg'       => 'sha256',
             'private_key_bits' => 2048,
         ];
 
-        $dn = array(
-            "countryName" => "US",
-            "stateOrProvinceName" => "New York",
-            "localityName" => "New York",
-            "organizationName" => "GuzzleOauth2Middleware",
-            "organizationalUnitName" => "PHP Unit Test",
-            "commonName" => "GuzzleOauth2Middleware",
-            "emailAddress" => "GuzzleOauth2Middleware@example.com"
-        );
+        $dn = [
+            'countryName'            => 'US',
+            'stateOrProvinceName'    => 'New York',
+            'localityName'           => 'New York',
+            'organizationName'       => 'GuzzleOauth2Middleware',
+            'organizationalUnitName' => 'PHP Unit Test',
+            'commonName'             => 'GuzzleOauth2Middleware',
+            'emailAddress'           => 'GuzzleOauth2Middleware@example.com',
+        ];
 
         $privateKey = openssl_pkey_new($config);
 
@@ -56,7 +55,7 @@ class JwtBearerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         openssl_x509_export($sscert, $certString);
         file_put_contents(__DIR__.'/../../build/cert.crt', $certString);
 
-        openssl_pkey_export($privateKey, $privateKeyString, "testpassword");
+        openssl_pkey_export($privateKey, $privateKeyString, 'testpassword');
         file_put_contents(__DIR__.'/../../build/cert.key', $privateKeyString);
     }
 
@@ -70,7 +69,7 @@ class JwtBearerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
     {
         $signer = new Sha256();
 
-        $privateKey = new Key(file_get_contents(__DIR__.'/../../build/cert.key'), "testpassword");
+        $privateKey = new Key(file_get_contents(__DIR__.'/../../build/cert.key'), 'testpassword');
         $publicKey = new Key(file_get_contents(__DIR__.'/../../build/cert.crt'));
 
         $token = (new Builder())->setIssuer('http://example.com') // Configures the issuer (iss claim)
@@ -80,10 +79,10 @@ class JwtBearerTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         ->setNotBefore(time() + 60) // Configures the time that the token can be used (nbf claim)
         ->setExpiration(time() + 3600) // Configures the expiration time of the token (nbf claim)
         ->set('uid', 1) // Configures a new claim, called "uid"
-        ->sign($signer,  $privateKey) // creates a signature using your private key
+        ->sign($signer, $privateKey) // creates a signature using your private key
         ->getToken(); // Retrieves the generated token
 
-        $tokenString = (string)$token;
+        $tokenString = (string) $token;
 
         $token = (new Parser())->parse($tokenString);
 

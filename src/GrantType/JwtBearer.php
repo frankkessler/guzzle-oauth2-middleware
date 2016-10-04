@@ -2,9 +2,8 @@
 
 namespace Frankkessler\Guzzle\Oauth2\GrantType;
 
-use Guzzle\Common\Exception\InvalidArgumentException;
-use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 
 /**
@@ -57,22 +56,22 @@ class JwtBearer extends GrantTypeBase
             'sub' => '',
         ];
 
-        if(isset($this->config['payload']) && is_array($this->config['payload'])){
+        if (isset($this->config['payload']) && is_array($this->config['payload'])) {
             $payload = array_replace($payload, $this->config['payload']);
         }
 
-        $algorithm = (isset($this->config['algorithm']))?$this->config['algorithm']:'RS256';
+        $algorithm = (isset($this->config['algorithm'])) ? $this->config['algorithm'] : 'RS256';
 
         $signer = $this->signerFactory($algorithm);
 
-        $privateKey = new Key(file_get_contents(__DIR__.'/../../build/cert.key'), "testpassword");
+        $privateKey = new Key(file_get_contents(__DIR__.'/../../build/cert.key'), 'testpassword');
 
         $token = (new Builder())->setIssuer($payload['iss'])
         ->setAudience($payload['aud'])
         ->setIssuedAt($payload['iat'])
         ->setExpiration($payload['exp'])
         ->setSubject($payload['sub'])
-        ->sign($signer,  $privateKey) // creates a signature using your private key
+        ->sign($signer, $privateKey) // creates a signature using your private key
         ->getToken(); // Retrieves the generated token
 
         return (string) $token;
@@ -85,7 +84,7 @@ class JwtBearer extends GrantTypeBase
      */
     protected function signerFactory($algo)
     {
-        switch($algo){
+        switch ($algo) {
             case 'RS256': return new \Lcobucci\JWT\Signer\Rsa\Sha256();
                 break;
             default: return new \Lcobucci\JWT\Signer\Rsa\Sha256();
