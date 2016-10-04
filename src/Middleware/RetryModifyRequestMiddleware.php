@@ -104,7 +104,7 @@ class RetryModifyRequestMiddleware
     {
         return function ($reason) use ($req, $options) {
             if (!call_user_func(
-                $this->decider,[
+                $this->decider, [
                     $options['retries'],
                     $req,
                     null,
@@ -113,7 +113,7 @@ class RetryModifyRequestMiddleware
             ) {
                 return new RejectedPromise($reason);
             }
-            $req = call_user_func_array($this->requestModifier,[$req,null]);
+            $req = call_user_func_array($this->requestModifier, [$req, null]);
 
             return $this->doRetry($req, $options);
         };
