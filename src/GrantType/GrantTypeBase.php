@@ -63,6 +63,9 @@ abstract class GrantTypeBase implements GrantTypeInterface
             'auth_location' => 'headers',
             'body_type'     => 'form_params',
             'base_uri'      => null,
+            'jwt_private_key_passphrase' => null,
+            'jwt_payload' => [],
+            'jwt_algorithm' => 'RS256',
         ];
     }
 

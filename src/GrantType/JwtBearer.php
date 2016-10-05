@@ -29,7 +29,7 @@ class JwtBearer extends GrantTypeBase
      */
     protected function getRequired()
     {
-        return array_merge(parent::getRequired(), ['private_key']);
+        return array_merge(parent::getRequired(), ['jwt_private_key']);
     }
 
     /**
@@ -53,29 +53,41 @@ class JwtBearer extends GrantTypeBase
             'iss' => $this->getConfig('client_id'),
             'aud' => rtrim($this->getConfig('base_uri'), '/'),
             'exp' => time() + 60 * 60,
-            'iat' => time(),
+            //'iat' => time(),
             'sub' => '',
         ];
 
-        if(isset($this->config['payload']) && is_array($this->config['payload'])){
-            $payload = array_replace($payload, $this->config['payload']);
+        if(isset($this->config['jwt_payload']) && is_array($this->config['jwt_payload'])){
+            $payload = array_replace($payload, $this->config['jwt_payload']);
         }
 
-        $algorithm = (isset($this->config['algorithm']))?$this->config['algorithm']:'RS256';
+        $signer = $this->signerFactory($this->config['jwt_algorithm']);
 
-        $signer = $this->signerFactory($algorithm);
+        $privateKey = new Key(file_get_contents($this->config['jwt_private_key']), $this->config['jwt_private_key_passphrase']);
 
-        $privateKey = new Key(file_get_contents(__DIR__.'/../../build/cert.key'), "testpassword");
+        $builder = $this->tokenBuilderFactory($payload);
 
-        $token = (new Builder())->setIssuer($payload['iss'])
-        ->setAudience($payload['aud'])
-        ->setIssuedAt($payload['iat'])
-        ->setExpiration($payload['exp'])
-        ->setSubject($payload['sub'])
-        ->sign($signer,  $privateKey) // creates a signature using your private key
-        ->getToken(); // Retrieves the generated token
+        $token = $builder->sign($signer, $privateKey)
+              ->getToken();
 
         return (string) $token;
+    }
+
+    protected function tokenBuilderFactory($payload)
+    {
+        $token = new Builder();
+
+        foreach($payload as $key=>$value){
+            if(is_array($value)){
+                foreach($value as $sub_value){
+                    $token->set($key,$sub_value);
+                }
+            }else{
+                $token->set($key,$value);
+            }
+        }
+
+        return $token;
     }
 
     /**

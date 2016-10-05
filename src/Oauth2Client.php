@@ -71,7 +71,7 @@ class Oauth2Client extends Client
                 return false;
             }
             if ($response instanceof ResponseInterface) {
-                if ($response->getStatusCode() == 401) {
+                if (in_array($response->getStatusCode(), [400, 401])) {
                     return true;
                 }
             }
@@ -80,7 +80,7 @@ class Oauth2Client extends Client
         },
             function (RequestInterface $request, ResponseInterface $response) {
                 if ($response instanceof ResponseInterface) {
-                    if ($response->getStatusCode() == 401) {
+                    if (in_array($response->getStatusCode(), [400, 401])) {
                         $token = $this->acquireAccessToken();
                         $this->setAccessToken($token, 'Bearer');
 
@@ -208,7 +208,7 @@ class Oauth2Client extends Client
 
         $form_params = $config;
         $form_params['grant_type'] = $grantType->grantType;
-        unset($form_params['token_url'], $form_params['auth_location'], $form_params['body_type'], $form_params['base_uri'], $form_params['private_key']);
+        unset($form_params['token_url'], $form_params['auth_location'], $form_params['body_type'], $form_params['base_uri'], $form_params['jwt_private_key'], $form_params['jwt_private_key_passphrase'], $form_params['jwt_payload'], $form_params['jwt_algorithm']);
 
         $requestOptions = [];
 
