@@ -53,7 +53,7 @@ class JwtBearer extends GrantTypeBase
             'iss' => $this->getConfig('client_id'),
             'aud' => rtrim($this->getConfig('base_uri'), '/'),
             'exp' => time() + 60 * 60,
-            //'iat' => time(),
+            'iat' => time(),
             'sub' => '',
         ];
 
