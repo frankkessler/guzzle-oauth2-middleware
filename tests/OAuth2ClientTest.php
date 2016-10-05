@@ -6,8 +6,6 @@ use Frankkessler\Guzzle\Oauth2\AccessToken;
 use Frankkessler\Guzzle\Oauth2\GrantType\ClientCredentials;
 use Frankkessler\Guzzle\Oauth2\GrantType\RefreshToken;
 use Frankkessler\Guzzle\Oauth2\Oauth2Client;
-use Frankkessler\Guzzle\Oauth2\Tests\GuzzleServer;
-use Frankkessler\Guzzle\Oauth2\Tests\MockResponses;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 

@@ -57,15 +57,15 @@ abstract class GrantTypeBase implements GrantTypeInterface
     protected function getDefaults()
     {
         return [
-            'client_secret' => '',
-            'scope'         => '',
-            'token_url'     => 'oauth2/token',
-            'auth_location' => 'headers',
-            'body_type'     => 'form_params',
-            'base_uri'      => null,
+            'client_secret'              => '',
+            'scope'                      => '',
+            'token_url'                  => 'oauth2/token',
+            'auth_location'              => 'headers',
+            'body_type'                  => 'form_params',
+            'base_uri'                   => null,
             'jwt_private_key_passphrase' => null,
-            'jwt_payload' => [],
-            'jwt_algorithm' => 'RS256',
+            'jwt_payload'                => [],
+            'jwt_algorithm'              => 'RS256',
         ];
     }
 

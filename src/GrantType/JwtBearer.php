@@ -2,9 +2,8 @@
 
 namespace Frankkessler\Guzzle\Oauth2\GrantType;
 
-use Guzzle\Common\Exception\InvalidArgumentException;
-use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 
 /**
@@ -57,7 +56,7 @@ class JwtBearer extends GrantTypeBase
             'sub' => '',
         ];
 
-        if(isset($this->config['jwt_payload']) && is_array($this->config['jwt_payload'])){
+        if (isset($this->config['jwt_payload']) && is_array($this->config['jwt_payload'])) {
             $payload = array_replace($payload, $this->config['jwt_payload']);
         }
 
@@ -77,13 +76,13 @@ class JwtBearer extends GrantTypeBase
     {
         $token = new Builder();
 
-        foreach($payload as $key=>$value){
-            if(is_array($value)){
-                foreach($value as $sub_value){
-                    $token->set($key,$sub_value);
+        foreach ($payload as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $sub_value) {
+                    $token->set($key, $sub_value);
                 }
-            }else{
-                $token->set($key,$value);
+            } else {
+                $token->set($key, $value);
             }
         }
 
@@ -97,7 +96,7 @@ class JwtBearer extends GrantTypeBase
      */
     protected function signerFactory($algo)
     {
-        switch($algo){
+        switch ($algo) {
             case 'RS256': return new \Lcobucci\JWT\Signer\Rsa\Sha256();
                 break;
             default: return new \Lcobucci\JWT\Signer\Rsa\Sha256();
