@@ -24,7 +24,6 @@ class OAuth2ClientTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             new Response(200, [], MockResponses::mockApiCall()),
         ]);
 
-
         $client = new Oauth2Client([
             'auth'     => 'oauth2',
             'base_uri' => GuzzleServer::$url,
@@ -83,7 +82,6 @@ class OAuth2ClientTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
             new Response(200, [], MockResponses::mockApiCall()),
         ]);
 
-
         $client = new Oauth2Client([
             'auth'     => 'oauth2',
             'base_uri' => GuzzleServer::$url,
@@ -138,7 +136,6 @@ class OAuth2ClientTest extends \Mockery\Adapter\Phpunit\MockeryTestCase
         $client = new Oauth2Client([
             'auth'        => 'oauth2',
         ]);
-
 
         // Set a valid token.
         $client->setAccessToken('testToken');
