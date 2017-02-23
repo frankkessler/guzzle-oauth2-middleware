@@ -38,7 +38,7 @@ use Frankkessler\Guzzle\Oauth2\Oauth2Client;
 
 $base_uri = 'https://example.com';
 
-$oauth2Client = new Oauth2Client(['base_uri' => $base_uri]);
+$client = new Oauth2Client(['base_uri' => $base_uri]);
 
 $config = [
     'username' => 'test@example.com',
@@ -53,10 +53,13 @@ $client->setGrantType($token);
 $refreshToken = new RefreshToken($config);
 $client->setRefreshTokenGrantType($refreshToken);
 
-
 $response = $client->get('https://example.com/api/user/me');
 
-print_r($response->json());
+$response_headers = $response->getHeaders();
+
+$response_code = $response->getStatusCode();
+
+$response_body = (string) $response->getBody();
 
 // Use $client->getAccessToken(); and $client->getRefreshToken() to get tokens
 // that can be persisted for subsequent requests.
