@@ -103,7 +103,7 @@ class RetryModifyRequestMiddleware
     private function onRejected(RequestInterface $req, array $options)
     {
         return function ($reason) use ($req, $options) {
-            if (!call_user_func(
+            if (!call_user_func_array(
                 $this->decider, [
                     $options['retries'],
                     $req,
